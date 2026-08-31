@@ -2,16 +2,21 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+
+<meta name="viewport"
+content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+
 <title>Puzzle K♥ubra</title>
 
 <style>
+
 *{
   box-sizing:border-box;
   -webkit-tap-highlight-color:transparent;
 }
 
-html,body{
+html,
+body{
   margin:0;
   width:100%;
   height:100%;
@@ -27,15 +32,23 @@ body{
   min-height:100svh;
 }
 
-/* ===== الرأس ===== */
+/* =========================
+   الرأس
+========================= */
 
 #top{
-  height:clamp(112px,18svh,178px);
-  padding:max(8px,env(safe-area-inset-top)) 16px 4px;
+  height:clamp(108px,16svh,160px);
+  padding:
+    max(8px,env(safe-area-inset-top))
+    14px
+    4px;
+
   display:grid;
   grid-template-columns:1fr auto 1fr;
   align-items:center;
+
   background:#07090c;
+  flex-shrink:0;
 }
 
 .side{
@@ -51,17 +64,24 @@ body{
 }
 
 .icon{
-  width:52px;
-  height:52px;
+  width:50px;
+  height:50px;
+
   border:2px solid #fff;
   border-radius:14px;
+
   background:transparent;
   color:#fff;
-  font-size:25px;
+
+  font-size:24px;
   cursor:pointer;
+
+  touch-action:manipulation;
 }
 
-/* ===== الاسم ===== */
+/* =========================
+   اسم اللعبة
+========================= */
 
 .brand{
   text-align:center;
@@ -71,31 +91,46 @@ body{
 
 .puzzle{
   display:block;
+
   color:#fff;
-  font-size:clamp(30px,5.4vw,58px);
+
+  font-size:clamp(29px,5vw,56px);
+
   font-weight:800;
   letter-spacing:-2px;
 }
 
 .koubra{
   display:block;
+
   color:#f2a0bd;
-  font-size:clamp(31px,5.6vw,60px);
+
+  font-size:clamp(30px,5.2vw,58px);
+
   font-weight:800;
   letter-spacing:-2px;
+
   margin-top:7px;
+
   text-shadow:0 1px 0 #ffd6e4;
 }
 
-/* ===== المعلومات ===== */
+/* =========================
+   المعلومات
+========================= */
 
 .stats{
   grid-column:1/4;
+
   display:grid;
   grid-template-columns:repeat(3,1fr);
-  gap:6px;
+
+  gap:5px;
+
   margin:0 auto;
+
   width:min(620px,92vw);
+
   text-align:center;
 }
 
@@ -105,57 +140,98 @@ body{
 }
 
 .stat-value{
-  font-size:clamp(20px,3.5vw,34px);
+  font-size:clamp(19px,3.4vw,34px);
   font-weight:800;
   line-height:1;
 }
 
-/* ===== اللوحة ===== */
+/* =========================
+   منطقة اللعبة
+========================= */
 
 #gameWrap{
   position:relative;
-  flex:1 1 auto;
+
+  flex:1 1 0;
   min-height:0;
+
   width:100%;
+
   display:flex;
   align-items:stretch;
   justify-content:center;
+
   background:#07090c;
-  padding:0 10px 10px;
+
+  padding:
+    0
+    8px
+    max(8px,env(safe-area-inset-bottom))
+    8px;
+
+  overflow:hidden;
 }
+
+/* =========================
+   اللوحة
+========================= */
 
 #game{
   display:block;
+
   width:100%;
   height:100%;
+
   background:#07090c;
+
   border:3px solid #fff;
   border-radius:16px;
+
   touch-action:none;
+
+  -webkit-user-select:none;
+  user-select:none;
+
+  -webkit-touch-callout:none;
+
+  cursor:pointer;
 }
 
-/* ===== رسالة التوقف ===== */
+/* =========================
+   الرسالة
+========================= */
 
 #message{
   position:absolute;
+
   inset:0;
+
   display:none;
+
   place-items:center;
+
   pointer-events:none;
+
   text-align:center;
 }
 
 #messageBox{
   background:rgba(7,9,12,.92);
+
   border:2px solid #fff;
+
   border-radius:18px;
+
   padding:22px 30px;
+
   min-width:220px;
 }
 
 #messageBox strong{
   display:block;
+
   font-size:26px;
+
   margin-bottom:8px;
 }
 
@@ -164,16 +240,24 @@ body{
   color:#ddd;
 }
 
-/* ===== الإعدادات ===== */
+/* =========================
+   الإعدادات
+========================= */
 
 #settings{
   position:fixed;
+
   inset:0;
+
   background:rgba(0,0,0,.68);
+
   display:none;
+
   align-items:center;
   justify-content:center;
+
   z-index:10;
+
   padding:20px;
 }
 
@@ -183,45 +267,66 @@ body{
 
 .modal{
   width:min(390px,92vw);
+
   background:#0d1015;
+
   border:2px solid #fff;
+
   border-radius:22px;
+
   padding:22px;
 }
 
 .modal h2{
   margin:0 0 18px;
+
   text-align:center;
+
   font-size:25px;
 }
 
 .row{
   display:flex;
+
   align-items:center;
+
   justify-content:space-between;
+
   padding:14px 2px;
+
   border-bottom:1px solid #292d33;
+
   font-size:17px;
 }
 
 .switch{
   width:52px;
   height:30px;
+
   border:0;
+
   border-radius:20px;
+
   background:#3a3e44;
+
   position:relative;
+
   cursor:pointer;
 }
 
 .switch i{
   position:absolute;
+
   width:24px;
   height:24px;
+
   border-radius:50%;
+
   background:#fff;
+
   top:3px;
   right:3px;
+
   transition:.2s;
 }
 
@@ -236,32 +341,48 @@ body{
 
 .modal>button:not(.switch){
   width:100%;
+
   margin-top:16px;
+
   padding:12px;
+
   border:2px solid #fff;
+
   border-radius:12px;
+
   background:transparent;
+
   color:#fff;
+
   font-size:16px;
 }
 
 .hint{
   font-size:12px;
+
   color:#aaa;
+
   text-align:center;
+
   margin-top:12px;
+
   line-height:1.6;
 }
+
+/* =========================
+   الوضع الأفقي
+========================= */
 
 @media(orientation:landscape){
 
   #top{
-    height:96px;
+    height:92px;
   }
 
   .stats{
     grid-column:3;
     grid-row:1;
+
     width:230px;
   }
 
@@ -279,6 +400,7 @@ body{
     grid-row:1;
   }
 }
+
 </style>
 </head>
 
@@ -287,33 +409,86 @@ body{
 <header id="top">
 
   <div class="side left">
-    <button class="icon" id="pauseBtn">Ⅱ</button>
+
+    <button
+      class="icon"
+      id="pauseBtn"
+      aria-label="إيقاف"
+    >
+      Ⅱ
+    </button>
+
   </div>
 
   <div class="brand">
-    <span class="puzzle">Puzzle</span>
-    <span class="koubra">K♥ubra</span>
+
+    <span class="puzzle">
+      Puzzle
+    </span>
+
+    <span class="koubra">
+      K♥ubra
+    </span>
+
   </div>
 
   <div class="side right">
-    <button class="icon" id="settingsBtn">⚙</button>
+
+    <button
+      class="icon"
+      id="settingsBtn"
+      aria-label="الإعدادات"
+    >
+      ⚙
+    </button>
+
   </div>
 
   <div class="stats">
 
     <div>
-      <div class="stat-label">النقاط</div>
-      <div class="stat-value" id="score">0</div>
+
+      <div class="stat-label">
+        النقاط
+      </div>
+
+      <div
+        class="stat-value"
+        id="score"
+      >
+        0
+      </div>
+
     </div>
 
     <div>
-      <div class="stat-label">الخطوط</div>
-      <div class="stat-value" id="lines">0</div>
+
+      <div class="stat-label">
+        الخطوط
+      </div>
+
+      <div
+        class="stat-value"
+        id="lines"
+      >
+        0
+      </div>
+
     </div>
 
     <div>
-      <div class="stat-label">المستوى</div>
-      <div class="stat-value" id="level">1</div>
+
+      <div class="stat-label">
+        المستوى
+      </div>
+
+      <div
+        class="stat-value"
+        id="level"
+      >
+        1
+      </div>
+
     </div>
 
   </div>
@@ -327,34 +502,53 @@ body{
   <div id="message">
 
     <div id="messageBox">
+
       <strong id="messageTitle"></strong>
+
       <span id="messageText"></span>
+
     </div>
 
   </div>
 
 </main>
 
-<!-- ===== الإعدادات ===== -->
-
 <section id="settings">
 
   <div class="modal">
 
-    <h2>الإعدادات</h2>
+    <h2>
+      الإعدادات
+    </h2>
 
     <div class="row">
-      <span>الأصوات</span>
-      <button class="switch on" id="soundSwitch">
+
+      <span>
+        الأصوات
+      </span>
+
+      <button
+        class="switch on"
+        id="soundSwitch"
+      >
         <i></i>
       </button>
+
     </div>
 
     <div class="row">
-      <span>الاهتزاز</span>
-      <button class="switch on" id="vibeSwitch">
+
+      <span>
+        الاهتزاز
+      </span>
+
+      <button
+        class="switch on"
+        id="vibeSwitch"
+      >
         <i></i>
       </button>
+
     </div>
 
     <button id="restartBtn">
@@ -366,7 +560,8 @@ body{
     </button>
 
     <div class="hint">
-      لا توجد موسيقى؛ فقط أصوات اللعب.<br>
+      لا توجد موسيقى؛ فقط صوت ملامسة القطعة للأرض.
+      <br>
       الإعدادات لا تغيّر حجم اللوحة أو شكلها.
     </div>
 
@@ -378,17 +573,13 @@ body{
 
 (() => {
 
+"use strict";
+
 /* =========================
-   حجم اللوحة
-   20 مربع عرض
+   إعدادات اللوحة
 ========================= */
 
 const C = 20;
-
-/*
-  عدد الصفوف الداخلي.
-  اللوحة نفسها تملأ الشاشة.
-*/
 const R = 28;
 
 
@@ -431,25 +622,60 @@ const colors = [
 
 const SHAPES = [
 
-  [[0,0],[1,0],[2,0],[3,0]],
+  [
+    [0,0],
+    [1,0],
+    [2,0],
+    [3,0]
+  ],
 
-  [[0,0],[1,0],[0,1],[1,1]],
+  [
+    [0,0],
+    [1,0],
+    [0,1],
+    [1,1]
+  ],
 
-  [[0,0],[1,0],[2,0],[1,1]],
+  [
+    [0,0],
+    [1,0],
+    [2,0],
+    [1,1]
+  ],
 
-  [[0,0],[0,1],[1,1],[2,1]],
+  [
+    [0,0],
+    [0,1],
+    [1,1],
+    [2,1]
+  ],
 
-  [[2,0],[0,1],[1,1],[2,1]],
+  [
+    [2,0],
+    [0,1],
+    [1,1],
+    [2,1]
+  ],
 
-  [[0,0],[1,0],[1,1],[2,1]],
+  [
+    [0,0],
+    [1,0],
+    [1,1],
+    [2,1]
+  ],
 
-  [[1,0],[2,0],[0,1],[1,1]]
+  [
+    [1,0],
+    [2,0],
+    [0,1],
+    [1,1]
+  ]
 
 ];
 
 
 /* =========================
-   المتغيرات
+   عناصر الصفحة
 ========================= */
 
 const canvas =
@@ -458,9 +684,17 @@ const canvas =
 const ctx =
   canvas.getContext("2d");
 
-let board;
+const $ = id =>
+  document.getElementById(id);
 
-let piece;
+
+/* =========================
+   حالة اللعبة
+========================= */
+
+let board = [];
+
+let piece = null;
 
 let score = 0;
 let lines = 0;
@@ -475,26 +709,30 @@ let vibrationOn = true;
 let last = 0;
 let dropAcc = 0;
 
-let cell;
-let boardW;
-let boardH;
+let cell = 0;
+let boardW = 0;
+let boardH = 0;
 
 
 /* =========================
-   اختصار العناصر
+   التحكم
 ========================= */
 
-const $ = id =>
-  document.getElementById(id);
+let touchStartX = 0;
+let touchStartY = 0;
+
+let touchStartTime = 0;
+
+let activePointer = null;
 
 
 /* =========================
-   تغيير حجم اللوحة
+   تغيير الحجم
 ========================= */
 
 function resize(){
 
-  const r =
+  const rect =
     canvas.getBoundingClientRect();
 
   const dpr =
@@ -506,27 +744,37 @@ function resize(){
   canvas.width =
     Math.max(
       1,
-      Math.floor(r.width*dpr)
+      Math.floor(
+        rect.width*dpr
+      )
     );
 
   canvas.height =
     Math.max(
       1,
-      Math.floor(r.height*dpr)
+      Math.floor(
+        rect.height*dpr
+      )
     );
 
   ctx.setTransform(
-    dpr,0,0,dpr,0,0
+    dpr,
+    0,
+    0,
+    dpr,
+    0,
+    0
   );
 
-  boardW = r.width;
-  boardH = r.height;
+  boardW = rect.width;
+  boardH = rect.height;
 
   cell =
     Math.min(
       boardW/C,
       boardH/R
     );
+
 }
 
 window.addEventListener(
@@ -534,79 +782,104 @@ window.addEventListener(
   resize
 );
 
+window.addEventListener(
+  "orientationchange",
+  () => {
+    setTimeout(
+      resize,
+      100
+    );
+  }
+);
+
 resize();
 
 
 /* =========================
    الصوت
+   الصوت فقط عند التثبيت
 ========================= */
+
+let audioContext = null;
 
 function beep(type="land"){
 
-  if(!soundOn) return;
+  if(!soundOn)
+    return;
 
   try{
 
-    const Audio =
+    const AudioCtx =
       window.AudioContext ||
       window.webkitAudioContext;
 
-    if(!window.gameAudio)
-      window.gameAudio =
-        new Audio();
+    if(!AudioCtx)
+      return;
+
+    if(!audioContext){
+
+      audioContext =
+        new AudioCtx();
+
+    }
 
     if(
-      !window.audioContext
-    )
-      window.audioContext =
-        new Audio();
+      audioContext.state ===
+      "suspended"
+    ){
 
-    const ac =
-      window.audioContext;
+      audioContext.resume();
+
+    }
 
     const osc =
-      ac.createOscillator();
+      audioContext.createOscillator();
 
     const gain =
-      ac.createGain();
+      audioContext.createGain();
 
-    osc.type="sine";
+    osc.type = "sine";
+
+    /*
+      صوت ملامسة القطعة للأرض.
+    */
 
     osc.frequency.value =
-      type==="clear"
+      type === "clear"
       ? 520
-      : type==="tap"
-      ? 220
       : 150;
 
     gain.gain.setValueAtTime(
       0.0001,
-      ac.currentTime
+      audioContext.currentTime
     );
 
     gain.gain.exponentialRampToValueAtTime(
       0.10,
-      ac.currentTime+0.01
+      audioContext.currentTime+0.01
     );
 
     gain.gain.exponentialRampToValueAtTime(
       0.0001,
-      ac.currentTime+0.12
+      audioContext.currentTime+0.12
     );
 
     osc.connect(gain);
 
     gain.connect(
-      ac.destination
+      audioContext.destination
     );
 
     osc.start();
 
     osc.stop(
-      ac.currentTime+0.15
+      audioContext.currentTime+0.15
     );
 
-  }catch(e){}
+  }
+  catch(error){
+
+  }
 
 }
 
@@ -637,7 +910,8 @@ function createBoard(){
 
   return Array.from(
     {length:R},
-    () => Array(C).fill(null)
+    () =>
+      Array(C).fill(null)
   );
 
 }
@@ -652,7 +926,8 @@ function spawn(){
   const raw =
     SHAPES[
       Math.floor(
-        Math.random()*SHAPES.length
+        Math.random() *
+        SHAPES.length
       )
     ];
 
@@ -681,9 +956,9 @@ function spawn(){
 
   piece = {
 
-    cells,
+    cells:cells,
 
-    color,
+    color:color,
 
     x:Math.floor(
       (C-width)/2
@@ -693,7 +968,6 @@ function spawn(){
 
   };
 
-
   if(
     !can(
       piece.x,
@@ -702,8 +976,8 @@ function spawn(){
     )
   ){
 
-    over=true;
-    paused=true;
+    over = true;
+    paused = true;
 
     showMessage(
       "انتهت اللعبة",
@@ -753,7 +1027,8 @@ function can(
 
 
 /* =========================
-   يمين / يسار
+   تحريك يمين ويسار
+   بدون صوت
 ========================= */
 
 function move(dx){
@@ -782,6 +1057,7 @@ function move(dx){
 
 /* =========================
    تدوير
+   بدون صوت
 ========================= */
 
 function rotate(){
@@ -793,7 +1069,6 @@ function rotate(){
   )
     return;
 
-
   let rotated =
     piece.cells.map(
       p => ({
@@ -801,7 +1076,6 @@ function rotate(){
         y:p.x
       })
     );
-
 
   const minX =
     Math.min(
@@ -817,7 +1091,6 @@ function rotate(){
       )
     );
 
-
   rotated =
     rotated.map(
       p => ({
@@ -826,9 +1099,14 @@ function rotate(){
       })
     );
 
-
   for(
-    const kick of [0,-1,1,-2,2]
+    const kick of [
+      0,
+      -1,
+      1,
+      -2,
+      2
+    ]
   ){
 
     if(
@@ -844,8 +1122,6 @@ function rotate(){
       piece.cells =
         rotated;
 
-      beep("tap");
-
       return;
 
     }
@@ -857,6 +1133,7 @@ function rotate(){
 
 /* =========================
    نزول خطوة
+   بدون صوت
 ========================= */
 
 function drop(){
@@ -867,7 +1144,6 @@ function drop(){
     over
   )
     return;
-
 
   if(
     can(
@@ -895,6 +1171,7 @@ function drop(){
 
 /* =========================
    نزول سريع
+   بدون صوت
 ========================= */
 
 function hardDrop(){
@@ -905,7 +1182,6 @@ function hardDrop(){
     over
   )
     return;
-
 
   while(
     can(
@@ -928,13 +1204,13 @@ function hardDrop(){
 
 /* =========================
    تثبيت القطعة
+   هنا فقط صوت الأرض
 ========================= */
 
 function lock(){
 
   if(!piece)
     return;
-
 
   piece.cells.forEach(
     p => {
@@ -960,20 +1236,20 @@ function lock(){
     }
   );
 
+  /*
+    الصوت الوحيد أثناء اللعب
+    عند ملامسة القطعة للأرض.
+  */
 
   beep("land");
 
   vibrate();
 
-
-  piece=null;
-
+  piece = null;
 
   clearLines();
 
-
   spawn();
-
 
   updateStats();
 
@@ -986,8 +1262,7 @@ function lock(){
 
 function clearLines(){
 
-  let count=0;
-
+  let count = 0;
 
   board =
     board.filter(
@@ -1010,7 +1285,6 @@ function clearLines(){
       }
     );
 
-
   while(
     board.length<R
   ){
@@ -1021,27 +1295,21 @@ function clearLines(){
 
   }
 
-
   if(count){
 
     lines += count;
 
-
     const points = [
-
       0,
       100,
       300,
       500,
       800
-
     ];
-
 
     score +=
       points[count] *
       level;
-
 
     level =
       1+
@@ -1049,6 +1317,10 @@ function clearLines(){
         lines/10
       );
 
+    /*
+      صوت حذف الصف.
+      وهو أيضًا صوت لعب وليس صوت حركة.
+    */
 
     beep("clear");
 
@@ -1066,13 +1338,16 @@ function clearLines(){
 function updateStats(){
 
   $("score")
-    .textContent=score;
+    .textContent =
+      score;
 
   $("lines")
-    .textContent=lines;
+    .textContent =
+      lines;
 
   $("level")
-    .textContent=level;
+    .textContent =
+      level;
 
 }
 
@@ -1162,7 +1437,6 @@ function drawBlock(
   const H =
     cell-pad*2;
 
-
   const gradient =
     ctx.createLinearGradient(
       X,
@@ -1170,7 +1444,6 @@ function drawBlock(
       X,
       Y+H
     );
-
 
   gradient.addColorStop(
     0,
@@ -1192,7 +1465,6 @@ function drawBlock(
     col.l
   );
 
-
   roundedRect(
     ctx,
     X,
@@ -1205,22 +1477,17 @@ function drawBlock(
     )
   );
 
-
   ctx.fillStyle =
     gradient;
 
   ctx.fill();
 
-
   ctx.strokeStyle =
     "rgba(255,255,255,.18)";
 
-  ctx.lineWidth=1;
+  ctx.lineWidth = 1;
 
   ctx.stroke();
-
-
-  /* لمعة بسيطة */
 
   const shine =
     ctx.createLinearGradient(
@@ -1244,7 +1511,6 @@ function drawBlock(
     1,
     "rgba(255,255,255,0)"
   );
-
 
   roundedRect(
     ctx,
@@ -1279,12 +1545,6 @@ function draw(){
     boardH
   );
 
-
-  /*
-    خلفية سادة تمامًا.
-    لا توجد شبكة.
-  */
-
   ctx.fillStyle =
     "#07090c";
 
@@ -1295,17 +1555,11 @@ function draw(){
     boardH
   );
 
-
-  /*
-    توسيط اللوحة الداخلية
-  */
-
   const offsetX =
     (boardW-cell*C)/2;
 
   const offsetY =
     (boardH-cell*R)/2;
-
 
   ctx.save();
 
@@ -1314,9 +1568,6 @@ function draw(){
     offsetY
   );
 
-
-  /* القطع الموجودة */
-
   for(
     let y=0;
     y<R;
@@ -1324,20 +1575,20 @@ function draw(){
   ){
 
     for(
-      let xx=0;
-      xx<C;
-      xx++
+      let x=0;
+      x<C;
+      x++
     ){
 
       if(
-        board[y][xx]!==null
+        board[y][x]!==null
       ){
 
         drawBlock(
-          xx,
+          x,
           y,
           colors[
-            board[y][xx]
+            board[y][x]
           ]
         );
 
@@ -1346,9 +1597,6 @@ function draw(){
     }
 
   }
-
-
-  /* القطعة الحالية */
 
   if(piece){
 
@@ -1368,9 +1616,7 @@ function draw(){
 
   }
 
-
   ctx.restore();
-
 
   if(
     paused &&
@@ -1393,7 +1639,7 @@ function draw(){
 
 
 /* =========================
-   رسالة
+   الرسائل
 ========================= */
 
 function showMessage(
@@ -1402,13 +1648,16 @@ function showMessage(
 ){
 
   $("messageTitle")
-    .textContent=title;
+    .textContent =
+      title;
 
   $("messageText")
-    .textContent=text;
+    .textContent =
+      text;
 
   $("message")
-    .style.display="grid";
+    .style.display =
+      "grid";
 
 }
 
@@ -1416,7 +1665,8 @@ function showMessage(
 function hideMessage(){
 
   $("message")
-    .style.display="none";
+    .style.display =
+      "none";
 
 }
 
@@ -1433,8 +1683,7 @@ function loop(time){
       time-last || 16
     );
 
-  last=time;
-
+  last = time;
 
   if(
     !paused &&
@@ -1444,7 +1693,6 @@ function loop(time){
 
     dropAcc += dt;
 
-
     const interval =
       Math.max(
         90,
@@ -1452,13 +1700,11 @@ function loop(time){
         (level-1)*55
       );
 
-
     if(
       dropAcc>=interval
     ){
 
       dropAcc=0;
-
 
       if(
         can(
@@ -1481,9 +1727,7 @@ function loop(time){
 
   }
 
-
   draw();
-
 
   requestAnimationFrame(
     loop
@@ -1496,23 +1740,21 @@ function loop(time){
    زر الإيقاف
 ========================= */
 
-$("pauseBtn").onclick =
+$("pauseBtn").addEventListener(
+  "click",
   () => {
 
     if(over)
       return;
 
-
     paused =
       !paused;
-
 
     $("pauseBtn")
       .textContent =
         paused
         ? "▶"
         : "Ⅱ";
-
 
     if(paused){
 
@@ -1528,7 +1770,8 @@ $("pauseBtn").onclick =
 
     }
 
-  };
+  }
+);
 
 
 /* =========================
@@ -1539,48 +1782,55 @@ const settings =
   $("settings");
 
 
-$("settingsBtn").onclick =
+$("settingsBtn").addEventListener(
+  "click",
   () => {
 
     settings
       .classList
       .add("open");
 
-    paused=true;
+    paused = true;
 
     showMessage(
       "متوقفة",
       ""
     );
 
-  };
+  }
+);
 
 
-$("closeSettings").onclick =
+$("closeSettings").addEventListener(
+  "click",
   () => {
 
     settings
       .classList
       .remove("open");
 
-
     if(!over){
 
-      paused=false;
+      paused = false;
 
       hideMessage();
 
       $("pauseBtn")
-        .textContent="Ⅱ";
+        .textContent =
+          "Ⅱ";
 
     }
 
-  };
+  }
+);
 
 
-/* الصوت */
+/* =========================
+   زر الصوت
+========================= */
 
-$("soundSwitch").onclick =
+$("soundSwitch").addEventListener(
+  "click",
   () => {
 
     soundOn =
@@ -1593,12 +1843,16 @@ $("soundSwitch").onclick =
         soundOn
       );
 
-  };
+  }
+);
 
 
-/* الاهتزاز */
+/* =========================
+   زر الاهتزاز
+========================= */
 
-$("vibeSwitch").onclick =
+$("vibeSwitch").addEventListener(
+  "click",
   () => {
 
     vibrationOn =
@@ -1611,26 +1865,34 @@ $("vibeSwitch").onclick =
         vibrationOn
       );
 
-  };
+  }
+);
 
 
-/* إعادة اللعبة */
+/* =========================
+   إعادة اللعبة
+========================= */
 
-$("restartBtn").onclick =
+$("restartBtn").addEventListener(
+  "click",
   () => {
 
-    board=createBoard();
+    board =
+      createBoard();
 
-    score=0;
-    lines=0;
-    level=1;
+    score = 0;
 
-    paused=false;
-    over=false;
+    lines = 0;
 
-    piece=null;
+    level = 1;
 
-    dropAcc=0;
+    paused = false;
+
+    over = false;
+
+    piece = null;
+
+    dropAcc = 0;
 
     hideMessage();
 
@@ -1639,60 +1901,330 @@ $("restartBtn").onclick =
       .remove("open");
 
     $("pauseBtn")
-      .textContent="Ⅱ";
+      .textContent =
+        "Ⅱ";
 
     spawn();
 
     updateStats();
 
-  };
+  }
+);
 
 
 /* =========================
-   التحكم باللمس
+   لمس اللوحة
 ========================= */
-
-let startX=0;
-let startY=0;
-let startTime=0;
-
 
 canvas.addEventListener(
   "pointerdown",
   e => {
 
-    startX=e.clientX;
-    startY=e.clientY;
-    startTime=performance.now();
+    if(
+      e.pointerType === "mouse" &&
+      e.button !== 0
+    )
+      return;
 
-  }
+    if(
+      !piece ||
+      paused ||
+      over
+    )
+      return;
+
+    e.preventDefault();
+
+    activePointer =
+      e.pointerId;
+
+    try{
+
+      canvas.setPointerCapture(
+        e.pointerId
+      );
+
+    }
+    catch(error){}
+
+    touchStartX =
+      e.clientX;
+
+    touchStartY =
+      e.clientY;
+
+    touchStartTime =
+      performance.now();
+
+  },
+  {passive:false}
 );
 
+
+/* =========================
+   أثناء السحب
+========================= */
+
+canvas.addEventListener(
+  "pointermove",
+  e => {
+
+    if(
+      activePointer !==
+      e.pointerId
+    )
+      return;
+
+    if(
+      !piece ||
+      paused ||
+      over
+    )
+      return;
+
+    e.preventDefault();
+
+    const dx =
+      e.clientX-touchStartX;
+
+    const dy =
+      e.clientY-touchStartY;
+
+
+    /*
+      حركة أفقية.
+      بدون صوت.
+    */
+
+    if(
+      Math.abs(dx) >
+      Math.abs(dy) &&
+      Math.abs(dx)>18
+    ){
+
+      const steps =
+        Math.max(
+          1,
+          Math.floor(
+            Math.abs(dx)/22
+          )
+        );
+
+      if(dx>0){
+
+        for(
+          let i=0;
+          i<steps;
+          i++
+        ){
+
+          move(1);
+
+        }
+
+      }
+      else{
+
+        for(
+          let i=0;
+          i<steps;
+          i++
+        ){
+
+          move(-1);
+
+        }
+
+      }
+
+      touchStartX =
+        e.clientX;
+
+    }
+
+
+    /*
+      السحب للأسفل.
+      بدون صوت هنا.
+      الصوت سيأتي فقط عند lock().
+    */
+
+    else if(
+      dy>35 &&
+      Math.abs(dy) >
+      Math.abs(dx)
+    ){
+
+      hardDrop();
+
+      touchStartX =
+        e.clientX;
+
+      touchStartY =
+        e.clientY;
+
+    }
+
+  },
+  {passive:false}
+);
+
+
+/* =========================
+   رفع الإصبع
+========================= */
 
 canvas.addEventListener(
   "pointerup",
   e => {
 
+    if(
+      activePointer !==
+      e.pointerId
+    )
+      return;
+
+    e.preventDefault();
+
     const dx =
-      e.clientX-startX;
+      e.clientX-touchStartX;
 
     const dy =
-      e.clientY-startY;
+      e.clientY-touchStartY;
 
-    const dt =
+    const elapsed =
       performance.now()-
-      startTime;
+      touchStartTime;
 
 
     /*
-      نقرة واحدة:
-      تدوير
+      نقرة = تدوير.
+      بدون صوت.
     */
 
     if(
-      Math.abs(dx)<18 &&
-      Math.abs(dy)<18 &&
-      dt<350
+      Math.abs(dx)<15 &&
+      Math.abs(dy)<15 &&
+      elapsed<350
+    ){
+
+      rotate();
+
+    }
+
+
+    activePointer = null;
+
+    try{
+
+      canvas.releasePointerCapture(
+        e.pointerId
+      );
+
+    }
+    catch(error){}
+
+  },
+  {passive:false}
+);
+
+
+/* =========================
+   إلغاء اللمس
+========================= */
+
+canvas.addEventListener(
+  "pointercancel",
+  e => {
+
+    if(
+      activePointer ===
+      e.pointerId
+    ){
+
+      activePointer = null;
+
+    }
+
+  },
+  {passive:false}
+);
+
+
+/* =========================
+   دعم Safari / iPad
+========================= */
+
+canvas.addEventListener(
+  "touchstart",
+  e => {
+
+    if(
+      !piece ||
+      paused ||
+      over
+    )
+      return;
+
+    if(
+      e.touches.length!==1
+    )
+      return;
+
+    const t =
+      e.touches[0];
+
+    touchStartX =
+      t.clientX;
+
+    touchStartY =
+      t.clientY;
+
+    touchStartTime =
+      performance.now();
+
+  },
+  {passive:false}
+);
+
+
+canvas.addEventListener(
+  "touchend",
+  e => {
+
+    if(
+      !piece ||
+      paused ||
+      over
+    )
+      return;
+
+    const t =
+      e.changedTouches[0];
+
+    if(!t)
+      return;
+
+    const dx =
+      t.clientX-touchStartX;
+
+    const dy =
+      t.clientY-touchStartY;
+
+    const elapsed =
+      performance.now()-
+      touchStartTime;
+
+
+    /*
+      نقرة = تدوير
+      بدون صوت.
+    */
+
+    if(
+      Math.abs(dx)<15 &&
+      Math.abs(dy)<15 &&
+      elapsed<350
     ){
 
       rotate();
@@ -1703,7 +2235,8 @@ canvas.addEventListener(
 
 
     /*
-      سحب يمين / يسار
+      حركة يمين / يسار
+      بدون صوت.
     */
 
     if(
@@ -1711,29 +2244,59 @@ canvas.addEventListener(
       Math.abs(dy)
     ){
 
-      if(dx>20)
-        move(1);
+      const steps =
+        Math.max(
+          1,
+          Math.round(
+            Math.abs(dx)/25
+          )
+        );
 
-      else if(dx<-20)
-        move(-1);
+      if(dx>0){
+
+        for(
+          let i=0;
+          i<steps;
+          i++
+        ){
+
+          move(1);
+
+        }
+
+      }
+      else{
+
+        for(
+          let i=0;
+          i<steps;
+          i++
+        ){
+
+          move(-1);
+
+        }
+
+      }
 
     }
 
 
     /*
-      سحب لأسفل:
-      نزول سريع
+      نزول سريع.
+      الصوت عند lock فقط.
     */
 
     else if(
-      dy>25
+      dy>30
     ){
 
       hardDrop();
 
     }
 
-  }
+  },
+  {passive:false}
 );
 
 
@@ -1741,40 +2304,68 @@ canvas.addEventListener(
    لوحة المفاتيح
 ========================= */
 
-addEventListener(
+window.addEventListener(
   "keydown",
   e => {
 
     if(
       e.key==="ArrowLeft"
-    )
+    ){
+
+      e.preventDefault();
+
       move(-1);
+
+    }
 
     else if(
       e.key==="ArrowRight"
-    )
+    ){
+
+      e.preventDefault();
+
       move(1);
+
+    }
 
     else if(
       e.key==="ArrowDown"
-    )
+    ){
+
+      e.preventDefault();
+
       drop();
+
+    }
 
     else if(
       e.key==="ArrowUp"
-    )
+    ){
+
+      e.preventDefault();
+
       rotate();
+
+    }
 
     else if(
       e.key===" "
-    )
+    ){
+
+      e.preventDefault();
+
       hardDrop();
+
+    }
 
     else if(
       e.key==="p" ||
       e.key==="P"
-    )
+    ){
+
       $("pauseBtn").click();
+
+    }
 
   }
 );
@@ -1784,7 +2375,8 @@ addEventListener(
    تشغيل اللعبة
 ========================= */
 
-board=createBoard();
+board =
+  createBoard();
 
 spawn();
 
@@ -1795,6 +2387,7 @@ requestAnimationFrame(
 );
 
 })();
+
 </script>
 
 </body>
