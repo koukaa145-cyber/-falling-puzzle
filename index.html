@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<title>Falling Puzzle</title>
+<style>
+html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#061447;font-family:Arial,sans-serif;touch-action:none}
+body{display:flex;flex-direction:column;color:#fff}
+#top{height:54px;display:flex;align-items:center;justify-content:space-around;background:#061447;flex:0 0 54px}
+.stat{text-align:center;font-size:11px;color:#bfc9e8}.stat b{display:block;color:white;font-size:17px;margin-top:2px}
+button{background:#10255f;color:#fff;border:1px solid #29427e;border-radius:10px;padding:8px 11px;font-size:16px}
+#wrap{position:relative;flex:1;min-height:0;background:#07164a}
+canvas{display:block;width:100%;height:100%}
+#hint{position:absolute;bottom:12px;left:50%;transform:translateX(-50%);font-size:11px;color:#8292c7;pointer-events:none;opacity:.8}
+</style>
+</head>
+<body>
+<div id="top">
+  <div class="stat">النقاط<b id="score">0</b></div>
+  <div class="stat">المستوى<b id="level">1</b></div>
+  <div class="stat">الخطوط<b id="lines">0</b></div>
+  <button id="pause">Ⅱ</button>
+</div>
+<div id="wrap"><canvas id="game"></canvas><div id="hint">يمين / يسار للتحريك • أعلى للتدوير • أسفل للتسريع</div></div>
+<script>
+const C=15,R=45, colors=['#e51616','#1769e8','#ffc21a','#28b83a'];
+const shapes=[
+[[0,0],[1,0],[2,0],[3,0]],[[0,0],[1,0],[0,1],[1,1]],[[0,0],[1,0],[2,0],[1,1]],
+[[0,0],[0,1],[1,1],[2,1]],[[2,0],[0,1],[1,1],[2,1]],[[1,0],[2,0],[0,1],[1,1]],
+[[0,0],[1,0],[1,1],[2,1]],[[0,0],[1,0],[2,0],[0,1]],[[0,0],[1,0],[0,1],[0,2]]
+];
+let board=Array.from({length:R},()=>Array(C).fill(null)), piece=null;
+let score=0,lines=0,level=1,paused=false,fast=false,repeat=null,last=0,acc=0;
+const canvas=document.getElementById('game'),ctx=canvas.getContext('2d');
+function resize(){canvas.width=canvas.clientWidth*devicePixelRatio;canvas.height=canvas.clientHeight*devicePixelRatio;ctx.setTransform(devicePixelRatio,0,0,devicePixelRatio,0,0)}
+addEventListener('resize',resize);resize();
+function spawn(){
+ let s=shapes[Math.floor(Math.random()*shapes.length)].map(([x,y])=>({x,y}));
+ let w=Math.max(...s.map(p=>p.x))+1;
+ piece={cells:s,color:Math.floor(Math.random()*4),x:Math.floor((C-w)/2),y:0};
+ if(!can(piece.x,piece.y,piece.cells)){paused=true;document.getElementById('pause').textContent='↻'}
+}
+function can(x,y,cells=piece.cells){return cells.every(p=>{let X=x+p.x,Y=y+p.y;return X>=0&&X<C&&Y>=0&&Y<R&&!board[Y][X]})}
+function move(dx){if(!piece||paused)return;if(can(piece.x+dx,piece.y))piece.x+=dx}
+function rotate(){if(!piece||paused)return;let r=piece.cells.map(p=>({x:-p.y,y:p.x}));let minx=Math.min(...r.map(p=>p.x)),miny=Math.min(...r.map(p=>p.y));r=r.map(p=>({x:p.x-minx,y:p.y-miny}));if(can(piece.x,piece.y,r))piece.cells=r}
+function lock(){
+ piece.cells.forEach(p=>{let x=piece.x+p.x,y=piece.y+p.y;if(y>=0&&y<R)board[y][x]=piece.color});
+ piece=null;clearLines();spawn();
+}
+function clearLines(){
+ let remove=new Set();
+ for(let y=0;y<R;y++)if(board[y].every(Boolean))for(let x=0;x<C;x++)remove.add(x+','+y);
+ // Diagonals: any continuous diagonal run of 15 occupied cells clears.
+ for(let sx=0;sx<C;sx++){diag(sx,0,1,1);diag(sx,0,-1,1)}
+ for(let sy=1;sy<R;sy++){diag(0,sy,1,1);diag(C-1,sy,-1,1)}
+ function diag(sx,sy,dx,dy){
+   let run=[];for(let x=sx,y=sy;x>=0&&x<C&&y<R;x+=dx,y+=dy){
+     if(board[y][x]!=null){run.push(x+','+y);if(run.length>=C)run.slice(-C).forEach(k=>remove.add(k))}
+     else run=[];
+   }
+ }
+ if(!remove.size)return;
+ remove.forEach(k=>{let [x,y]=k.split(',').map(Number);board[y][x]=null});
+ // gravity by column
+ for(let x=0;x<C;x++){let a=[];for(let y=R-1;y>=0;y--)if(board[y][x]!=null)a.push(board[y][x]);for(let y=R-1,i=0;y>=0;y--,i++)board[y][x]=i<a.length?a[i]:null}
+ let n=remove.size;lines+=Math.max(1,Math.floor(n/C));score+=n*10*level;level=1+Math.floor(lines/8);
+}
+function tick(){if(!piece||paused)return;let d=fast?2:1;if(can(piece.x,piece.y+d))piece.y+=d;else lock()}
+function loop(t){let dt=t-last;last=t;if(!paused){acc+=dt;let interval=Math.max(80,720-(level-1)*45);if(fast)interval=70;while(acc>=interval){acc-=interval;tick()}}draw();requestAnimationFrame(loop)}
+function draw(){
+ let w=canvas.clientWidth,h=canvas.clientHeight,cw=w/C,ch=h/R;
+ ctx.fillStyle='#07164a';ctx.fillRect(0,0,w,h);
+ for(let y=0;y<R;y++)for(let x=0;x<C;x++)if(board[y][x]!=null)block(x,y,cw,ch,colors[board[y][x]]);
+ if(piece)piece.cells.forEach(p=>block(piece.x+p.x,piece.y+p.y,cw,ch,colors[piece.color]));
+ document.getElementById('score').textContent=score;document.getElementById('level').textContent=level;document.getElementById('lines').textContent=lines;
+}
+function block(x,y,cw,ch,col){
+ let g=.9,xx=x*cw+g,yy=y*ch+g;
+ ctx.fillStyle=col;ctx.fillRect(xx,yy,cw-2*g,ch-2*g);
+ // simple flat highlight edge; no glow or particles
+ ctx.fillStyle='rgba(255,255,255,.22)';ctx.fillRect(xx,yy,cw-2*g,Math.max(1,ch*.07));
+}
+function down(v){fast=v}
+function pointer(e){
+ const r=canvas.getBoundingClientRect(),x=e.clientX-r.left,y=e.clientY-r.top;
+ if(e.type==='pointerdown'){
+   if(y<r.height*.18){rotate();return}
+   if(y>r.height*.82){down(true);return}
+   if(x<r.width*.28){move(-1);repeat=setInterval(()=>move(-1),95)}
+   else if(x>r.width*.72){move(1);repeat=setInterval(()=>move(1),95)}
+ }
+ else {if(repeat){clearInterval(repeat);repeat=null}down(false)}
+}
+canvas.addEventListener('pointerdown',pointer);canvas.addEventListener('pointerup',pointer);canvas.addEventListener('pointercancel',pointer);
+document.getElementById('pause').onclick=()=>{
+ if(piece===null&&paused){board=Array.from({length:R},()=>Array(C).fill(null));score=lines=0;level=1;paused=false;spawn();document.getElementById('pause').textContent='Ⅱ';return}
+ paused=!paused;document.getElementById('pause').textContent=paused?'▶':'Ⅱ';
+};
+spawn();requestAnimationFrame(loop);
+</script>
+</body>
+</html>
